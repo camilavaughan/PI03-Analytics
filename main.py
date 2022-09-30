@@ -2,7 +2,7 @@ import pandas as pd
 import requests
 import datetime
 import streamlit as st
-import plotly.graph_objects as go
+
 
 
 #Preparando la data a extraer
