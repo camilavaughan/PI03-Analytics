@@ -1,28 +1,25 @@
 import pandas as pd
 import requests
-import datetime
 import streamlit as st
-from main import get_market_data
+from main import get_market_data, api_url, coins
 import plotly.graph_objects as go
 
+#Configuramos la página
+st.set_page_config(page_title= "camilavaughan", layout= "wide")
 st.markdown(''' # **FTX Price App**
-A simple cryptocurrency price app pulling price data from FTX API*.
+A simple cryptocurrency price app pulling price data from FTX API.
 ''')
 
-coins = ["BTC/USD", "ETH/USD", "USDT/USD", "BNB/USD", "XRP/USD", "SOL/USD", "DOGE/USD", "DOT/USD", "DAI/USD", "SHIB/USD"]
+coin = st.sidebar.selectbox("Choose a coin: ", coins)
 
-coin = st.sidebar.selectbox(
-    "Choose a coin: ", coins
-)
-
-st.title(f"{coin} to USD")
-url = f"https//ftx.com/api/markets/{coin}"
+url = f"{api_url}/markets/{coin}/USD"
 request = requests.get(url).json()
 data = pd.Series(request["result"])
 
 col1, col2, col3 = st.columns(3)
+price = data["price"]
 col1.metric("Price", data['price'], f"{round(data['change24h']*100,2)}%")
-col2.metric("Low", data['priceLow'])
-col3.metric("High", data['priceHigh'])
+col2.metric("Low", data['low'])
+col3.metric("High", data['high'])
 val=int(data['volumeUsd'])
 st.metric("Volume", f'{val:,}')

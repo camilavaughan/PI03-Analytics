@@ -5,24 +5,20 @@ import streamlit as st
 import plotly.graph_objects as go
 
 
-
-#preparando la data a extraer
-coins = ["BTC/USD", "ETH/USD", "USDT/USD", "BNB/USD", "XRP/USD", "SOL/USD", "DOGE/USD", "DOT/USD", "DAI/USD", "SHIB/USD"]  #monedas elegidas
-api_url = "https://ftx.com/api"
+#Preparando la data a extraer
+coins = ["BTC", "ETH", "USDT", "BNB", "XRP", "SOL", "DOGE", "DOT", "DAI", "SHIB"]  #monedas elegidas
+api_url = "https://ftx.com/api" #endpoint a utilizar para los demas urls
 resolution = (60 * 60 * 24) #seg * min * hs
 start_time = datetime.datetime(2022,9,1).timestamp() #inicio del analisis
-end_time = datetime.datetime.today().timestamp() #final del 
+end_time = datetime.datetime.today().timestamp() #final del analisis
 
 
 def get_market_data(coin):
     path = f"/markets/{coin}/candles?resolution={resolution}&start_time={start_time}&end_time={end_time}"
     url = api_url + path
-    res = requests.get(url).json()
-    df = pd.DataFrame(res["result"])
-    # df.set_index("name", inplace = True)
+    request = requests.get(url).json()
+    df = pd.DataFrame(request["result"])
     df["date"] = pd.to_datetime(df["startTime"])
     df = df.drop(columns=["startTime", "time"])
     df.sort_values("date", inplace=True)
-    # name =  market.replace("/", "_")
     return df
-
