@@ -18,7 +18,6 @@ def get_market_data(coin):
     url = api_url + path
     request = requests.get(url).json()
     df = pd.DataFrame(request["result"])
-    df["date"] = pd.to_datetime(df["startTime"])
+    df["date"] = pd.to_datetime(df["startTime"]).dt.date
     df = df.drop(columns=["startTime", "time"])
-    df.sort_values("date", inplace=True)
     return df
