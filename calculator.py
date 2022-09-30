@@ -1,8 +1,10 @@
 import streamlit as st
 import requests
-from main import api_url, coins
 
-#Las monedas y el url de la API estan definidos y son traidos desde el archivo "main.py"
+coins = ["BTC", "ETH", "USDT", "BNB", "XRP", "SOL", "DOGE", "DOT", "DAI", "SHIB"]  #monedas elegidas
+api_url = "https://ftx.com/api" #endpoint a utilizar para los demas urls
+
+
 def convert_currency(from_currency, to_currency, amount):
     if from_currency == to_currency:    #USD2USD
         if from_currency == "USD" and to_currency == "USD":
